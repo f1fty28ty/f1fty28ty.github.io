@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[TRICK NAME] — The Snowboard Compendium</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<!-- ============ SHARED HEADER — identical on every page ============ -->
+<header class="site-header">
+  <div class="site-header-inner">
+    <div class="site-logo">THE SNOWBOARD <span>COMPENDIUM</span></div>
+    <nav class="site-nav">
+      <a href="../index.html">Home</a>
+      <a href="../learn.html">Learn</a>
+      <a href="../tricks.html" aria-current="page">Tricks</a>
+      <a href="../drills.html">Drills</a>
+      <a href="../reference.html">Reference</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+<!-- ============ END SHARED HEADER ============ -->
+
+<div class="page">
+
+  <!-- LEFT RAIL: prerequisite chain + related drills. Fill in real links. -->
+  <aside class="rail">
+    <div class="rail-block">
+      <h4>Prerequisites</h4>
+      <ul>
+        <li><a href="[PREREQ_1_LINK]">[Prerequisite trick 1]</a></li>
+        <li><a href="[PREREQ_2_LINK]">[Prerequisite trick 2]</a></li>
+      </ul>
+    </div>
+    <div class="rail-block">
+      <h4>This Trick</h4>
+      <ul>
+        <li class="current">[Trick Name]</li>
+      </ul>
+    </div>
+    <div class="rail-block">
+      <h4>Leads To</h4>
+      <ul>
+        <li><a href="[NEXT_TRICK_LINK]">[Next trick up]</a></li>
+      </ul>
+    </div>
+    <div class="rail-block">
+      <h4>Related Drills</h4>
+      <ul>
+        <li><a href="[DRILL_LINK]">[Drill name]</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <p class="crumbs"><a href="../tricks.html">Tricks</a> / <a href="[REALM_LINK]">[Realm name]</a> / [Trick Name]</p>
+
+    <h1>[Trick Name]</h1>
+
+    <!-- DIFFICULTY BADGE: use exactly one. Swap the class and the inner SVG shape. -->
+    <!-- BEGINNER (green circle) -->
+    <span class="difficulty beginner">
+      <svg viewBox="0 0 14 14"><circle cx="7" cy="7" r="6"/></svg>
+      Beginner
+    </span>
+    <!-- INTERMEDIATE (blue square) — swap in when needed:
+    <span class="difficulty intermediate">
+      <svg viewBox="0 0 14 14"><rect x="1" y="1" width="12" height="12"/></svg>
+      Intermediate
+    </span>
+    -->
+    <!-- ADVANCED (black diamond):
+    <span class="difficulty advanced">
+      <svg viewBox="0 0 14 14"><polygon points="7,0 14,7 7,14 0,7"/></svg>
+      Advanced
+    </span>
+    -->
+    <!-- EXPERT (double black diamond):
+    <span class="difficulty expert">
+      <svg viewBox="0 0 24 14"><polygon points="7,0 14,7 7,14 0,7"/><polygon points="17,0 24,7 17,14 10,7"/></svg>
+      Expert
+    </span>
+    -->
+
+    <div class="meta-row">
+      <span><strong>Regular/Goofy:</strong> both shown below</span>
+      <span><strong>FS/BS:</strong> both variants</span>
+    </div>
+
+    <h2>Overview</h2>
+    <p>[One or two short paragraphs. What the trick is, what it teaches, why it sits at this point in the progression.]</p>
+
+    <h2>Step-by-Step</h2>
+    <ol>
+      <li>[Setup — approach speed, stance adjustment.]</li>
+      <li>[Initiation — the pop, the edge, the rotation.]</li>
+      <li>[In the air / mid-trick — body position, eyes, grab if applicable.]</li>
+      <li>[Landing — absorption, edge re-engagement, ride-away.]</li>
+    </ol>
+
+    <div class="media-pair">
+      <div class="media-slot">[GIF/video — Regular]</div>
+      <div class="media-slot">[GIF/video — Goofy]</div>
+    </div>
+
+    <div class="coachs-corner">
+      <h4>Coach's Corner — Common Mistakes</h4>
+      <ul>
+        <li>[Mistake 1 — what it looks like, what causes it.]</li>
+        <li>[Mistake 2]</li>
+        <li>[Mistake 3]</li>
+      </ul>
+    </div>
+
+    <h2>Progression Path</h2>
+    <div class="progression-strip">
+      <span class="step">← <a href="[PREREQ_1_LINK]">[Previous trick]</a></span>
+      <span class="divider">/</span>
+      <span class="step"><a href="[NEXT_TRICK_LINK]">[Next trick]</a> →</span>
+    </div>
+
+  </main>
+</div>
+
+<footer class="site-footer">
+  &copy; The Snowboard Compendium. Built for coaches, open to riders.
+</footer>
+
+</body>
+</html>
