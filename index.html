@@ -1,80 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Snowboard Compendium</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Snowboard Compendium — Coach's Reference</title>
+  <meta name="description" content="A curriculum-grade reference for snowboard coaches and serious riders. Every trick linked forward and back. Nothing skipped.">
+  <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
 
-<!-- ============ SHARED HEADER — paste identically into every page ============ -->
-<header class="site-header">
-  <div class="site-header-inner">
-    <div class="site-logo">THE SNOWBOARD <span>COMPENDIUM</span></div>
-    <nav class="site-nav">
-      <a href="index.html" aria-current="page">Home</a>
-      <a href="learn.html">Learn</a>
-      <a href="tricks.html">Tricks</a>
-      <a href="drills.html">Drills</a>
-      <a href="reference.html">Reference</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-  </div>
-</header>
-<!-- ============ END SHARED HEADER ============ -->
-
-<main>
-  <div style="max-width:1080px; margin:0 auto; padding:60px 24px 20px;">
-    <h1 style="max-width:14ch;">Every trick has a prerequisite. Nothing is skipped.</h1>
-    <p style="font-size:1.1rem; max-width:56ch; color:var(--ink-soft);">
-      A coach-oriented reference for snowboarding — built ground up from stance and edge control
-      to advanced freestyle. Find a term, a trick, a drill, or a progression ladder in two clicks.
-    </p>
-    <div style="display:flex; gap:12px; margin-top:22px; flex-wrap:wrap;">
-      <a class="btn" href="learn.html">Start with Essentials</a>
-      <a class="btn btn-outline" href="tricks.html">Browse the Trick Library</a>
-    </div>
-  </div>
-
-  <div style="max-width:1080px; margin:0 auto; padding:20px 24px 80px;">
-    <h2>Realms of Riding</h2>
-    <div class="tile-grid">
-      <div class="tile">
-        <h4>Freestyle</h4>
-        <p>Rails, jumps, jibbing. Park progression from ollies to spins.</p>
-        <a href="realm-freestyle.html">Enter →</a>
-      </div>
-      <div class="tile">
-        <h4>Freeride</h4>
-        <p>Natural terrain, variable snow, line choice.</p>
-        <a href="realm-freeride.html">Enter →</a>
-      </div>
-      <div class="tile">
-        <h4>Powder</h4>
-        <p>Float, weight distribution, deep-snow stance adjustments.</p>
-        <a href="realm-powder.html">Enter →</a>
-      </div>
-      <div class="tile">
-        <h4>Carving</h4>
-        <p>Edge angle, pressure control, high-speed turns.</p>
-        <a href="realm-carving.html">Enter →</a>
+  <!-- Site nav -->
+  <nav class="site-nav" aria-label="Primary navigation">
+    <div class="container">
+      <div class="site-nav__inner">
+        <a class="site-nav__logo" href="index.html">The Snowboard Compendium</a>
+        <ul class="site-nav__links" role="list">
+          <li><a href="#" aria-current="page">Freestyle</a></li>
+          <li><a href="#">Freeride</a></li>
+          <li><a href="#">Powder</a></li>
+          <li><a href="#">Carving</a></li>
+          <li><a href="#">Essentials</a></li>
+          <li><a href="#">Drills</a></li>
+        </ul>
       </div>
     </div>
+  </nav>
 
-    <h2>Start Here</h2>
-    <div class="tile-grid">
-      <div class="tile"><h4>Terminology</h4><p>106 terms, 9 categories, zero duplicates.</p><a href="essential-terminology.html">Read →</a></div>
-      <div class="tile"><h4>Stance &amp; Setup</h4><p>Width, angles, the squat test.</p><a href="essential-stance-setup.html">Read →</a></div>
-      <div class="tile"><h4>Progression Mindset</h4><p>Comfort, stretch, panic. Know when you're ready.</p><a href="essential-progression-mindset.html">Read →</a></div>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero__inner">
+        <div>
+          <p class="hero__eyebrow">Coach's Reference · Est. 2024</p>
+          <h1 class="hero__title">The Snowboard<br><span>Compendium</span></h1>
+          <p class="hero__desc">A curriculum-grade reference for coaches and serious riders. Every trick linked forward and back. Nothing skipped.</p>
+        </div>
+        <div class="hero__legend" aria-label="Difficulty scale">
+          <div class="hero__legend-item">
+            <span class="badge" data-difficulty="green" data-size="22" aria-label="Green Circle"></span>
+            <span>Green Circle</span>
+          </div>
+          <div class="hero__legend-item">
+            <span class="badge" data-difficulty="blue" data-size="22" aria-label="Blue Square"></span>
+            <span>Blue Square</span>
+          </div>
+          <div class="hero__legend-item">
+            <span class="badge" data-difficulty="black" data-size="22" aria-label="Black Diamond"></span>
+            <span>Black Diamond</span>
+          </div>
+          <div class="hero__legend-item">
+            <span class="badge" data-difficulty="dblack" data-size="22" aria-label="Double Black Diamond"></span>
+            <span>Double Black</span>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</main>
+  </section>
 
-<footer class="site-footer">
-  &copy; The Snowboard Compendium. Built for coaches, open to riders.
-</footer>
+  <!-- Realms -->
+  <section class="realm-section">
+    <div class="container">
+      <p class="section-header">Realms</p>
+      <div class="realm-grid">
+        <a class="realm-card" href="#">
+          <div class="realm-card__icon">↑</div>
+          <div class="realm-card__name">Freestyle</div>
+          <p class="realm-card__desc">Park, pipe, kickers, urban features</p>
+          <p class="realm-card__count">84 tricks →</p>
+        </a>
+        <a class="realm-card" href="#">
+          <div class="realm-card__icon">◈</div>
+          <div class="realm-card__name">Freeride</div>
+          <p class="realm-card__desc">Backcountry, sidecountry, big mountain</p>
+          <p class="realm-card__count">41 tricks →</p>
+        </a>
+        <a class="realm-card" href="#">
+          <div class="realm-card__icon">≋</div>
+          <div class="realm-card__name">Powder</div>
+          <p class="realm-card__desc">Deep snow, float technique, surf lines</p>
+          <p class="realm-card__count">28 tricks →</p>
+        </a>
+        <a class="realm-card" href="#">
+          <div class="realm-card__icon">⌒</div>
+          <div class="realm-card__name">Carving</div>
+          <p class="realm-card__desc">Groomer technique, edge control, rail-to-rail</p>
+          <p class="realm-card__count">35 tricks →</p>
+        </a>
+      </div>
+    </div>
+  </section>
 
+  <!-- Two-column: trick index + progression ladder -->
+  <section class="two-col-section">
+    <div class="container">
+      <div class="two-col">
+
+        <!-- Trick index -->
+        <div>
+          <p class="section-header">Tricks — Recently Updated</p>
+          <div class="trick-table" role="list">
+
+            <a class="trick-row" href="trick/backside-180.html" role="listitem">
+              <span class="badge" data-difficulty="blue" data-size="14" aria-label="Blue Square"></span>
+              <span class="trick-row__name">Backside 180</span>
+              <span class="trick-row__category">Spins</span>
+              <span class="trick-row__realm">Freestyle</span>
+            </a>
+
+            <a class="trick-row" href="#" role="listitem">
+              <span class="badge" data-difficulty="green" data-size="14" aria-label="Green Circle"></span>
+              <span class="trick-row__name">Ollie</span>
+              <span class="trick-row__category">Foundation</span>
+              <span class="trick-row__realm">Freestyle</span>
+            </a>
+
+            <a class="trick-row" href="#" role="listitem">
+              <span class="badge" data-difficulty="green" data-size="14" aria-label="Green Circle"></span>
+              <span class="trick-row__name">Heelside 180</span>
+              <span class="trick-row__category">Spins</span>
+              <span class="trick-row__realm">Freestyle</span>
+            </a>
+
+            <a class="trick-row" href="#" role="listitem">
+              <span class="badge" data-difficulty="blue" data-size="14" aria-label="Blue Square"></span>
+              <span class="trick-row__name">Frontside 180</span>
+              <span class="trick-row__category">Spins</span>
+              <span class="trick-row__realm">Freestyle</span>
+            </a>
+
+            <a class="trick-row" href="#" role="listitem">
+              <span class="badge" data-difficulty="black" data-size="14" aria-label="Black Diamond"></span>
+              <span class="trick-row__name">Cab 360</span>
+              <span class="trick-row__category">Spins</span>
+              <span class="trick-row__realm">Freestyle</span>
+            </a>
+
+            <a class="trick-row" href="#" role="listitem">
+              <span class="badge" data-difficulty="black" data-size="14" aria-label="Black Diamond"></span>
+              <span class="trick-row__name">Cork 540</span>
+              <span class="trick-row__category">Off-Axis</span>
+              <span class="trick-row__realm">Freestyle</span>
+            </a>
+
+            <a class="trick-row" href="#" role="listitem">
+              <span class="badge" data-difficulty="blue" data-size="14" aria-label="Blue Square"></span>
+              <span class="trick-row__name">Deep Powder Entry</span>
+              <span class="trick-row__category">Technique</span>
+              <span class="trick-row__realm">Powder</span>
+            </a>
+
+            <a class="trick-row" href="#" role="listitem">
+              <span class="badge" data-difficulty="blue" data-size="14" aria-label="Blue Square"></span>
+              <span class="trick-row__name">GS Carve</span>
+              <span class="trick-row__category">Edge Work</span>
+              <span class="trick-row__realm">Carving</span>
+            </a>
+
+            <a class="trick-row" href="#" role="listitem">
+              <span class="badge" data-difficulty="blue" data-size="14" aria-label="Blue Square"></span>
+              <span class="trick-row__name">Nose Manual</span>
+              <span class="trick-row__category">Ground</span>
+              <span class="trick-row__realm">Freestyle</span>
+            </a>
+
+            <a class="trick-row" href="#" role="listitem">
+              <span class="badge" data-difficulty="dblack" data-size="14" aria-label="Double Black Diamond"></span>
+              <span class="trick-row__name">Double Cork 1080</span>
+              <span class="trick-row__category">Off-Axis</span>
+              <span class="trick-row__realm">Freestyle</span>
+            </a>
+
+          </div>
+        </div>
+
+        <!-- Progression ladder -->
+        <div>
+          <p class="section-header">Start Here — Freestyle Track</p>
+          <div class="ladder" role="list">
+
+            <a class="ladder-step" href="#" role="listitem">
+              <span class="ladder-step__num">1</span>
+              <span class="badge" data-difficulty="green" data-size="12" aria-label="Green Circle"></span>
+              <span class="ladder-step__name">Falling Leaf</span>
+            </a>
+            <a class="ladder-step" href="#" role="listitem">
+              <span class="ladder-step__num">2</span>
+              <span class="badge" data-difficulty="green" data-size="12" aria-label="Green Circle"></span>
+              <span class="ladder-step__name">Skidded Turn</span>
+            </a>
+            <a class="ladder-step" href="#" role="listitem">
+              <span class="ladder-step__num">3</span>
+              <span class="badge" data-difficulty="green" data-size="12" aria-label="Green Circle"></span>
+              <span class="ladder-step__name">Ollie</span>
+            </a>
+            <a class="ladder-step" href="#" role="listitem">
+              <span class="ladder-step__num">4</span>
+              <span class="badge" data-difficulty="green" data-size="12" aria-label="Green Circle"></span>
+              <span class="ladder-step__name">Heelside 180</span>
+            </a>
+            <a class="ladder-step" href="trick/backside-180.html" role="listitem">
+              <span class="ladder-step__num">5</span>
+              <span class="badge" data-difficulty="blue" data-size="12" aria-label="Blue Square"></span>
+              <span class="ladder-step__name">Backside 180</span>
+            </a>
+            <a class="ladder-step" href="#" role="listitem">
+              <span class="ladder-step__num">6</span>
+              <span class="badge" data-difficulty="blue" data-size="12" aria-label="Blue Square"></span>
+              <span class="ladder-step__name">Frontside 180</span>
+            </a>
+            <a class="ladder-step" href="#" role="listitem">
+              <span class="ladder-step__num">7</span>
+              <span class="badge" data-difficulty="blue" data-size="12" aria-label="Blue Square"></span>
+              <span class="ladder-step__name">Cab 180</span>
+            </a>
+            <a class="ladder-step" href="#" role="listitem">
+              <span class="ladder-step__num">8</span>
+              <span class="badge" data-difficulty="black" data-size="12" aria-label="Black Diamond"></span>
+              <span class="ladder-step__name">Backside 360</span>
+            </a>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
