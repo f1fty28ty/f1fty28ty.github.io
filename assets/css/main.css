@@ -2,24 +2,22 @@
 
 /* ─── tokens ─── */
 :root {
-  --bg:         #080808;
-  --surface:    #111111;
+  --bg: #080808;
+  --surface: #111111;
   --surface-up: #181818;
-  --border:     #242424;
-  --border-up:  #303030;
-  --text:       #EAEAE4;
-  --muted:      #6B6B65;
-  --amber:      #F0B429;
-  --amber-dim:  rgba(240, 180, 41, 0.12);
-  --green:      #22C55E;
-  --blue:       #3B82F6;
+  --border: #242424;
+  --border-up: #303030;
+  --text: #EAEAE4;
+  --muted: #6B6B65;
+  --amber: #F0B429;
+  --amber-dim: rgba(240, 180, 41, 0.12);
+  --green: #22C55E;
+  --blue: #3B82F6;
   --black-diff: #E5E7EB;
-  --red:        #EF4444;
-
+  --red: #EF4444;
   --font-display: 'Barlow Condensed', sans-serif;
-  --font-body:    'Inter', sans-serif;
-  --font-mono:    'DM Mono', monospace;
-
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'DM Mono', monospace;
   --max-w: 1140px;
   --px: 20px;
 }
@@ -27,6 +25,7 @@
 /* ─── reset ─── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 16px; color-scheme: dark; }
+html, body { overflow-x: hidden; }
 body {
   background: var(--bg);
   color: var(--text);
@@ -51,6 +50,7 @@ img, svg { display: block; max-width: 100%; }
   border-bottom: 1px solid var(--border);
 }
 .site-nav__inner {
+  position: relative;
   display: flex;
   align-items: center;
   height: 44px;
@@ -89,6 +89,35 @@ img, svg { display: block; max-width: 100%; }
 .site-nav__links a:hover,
 .site-nav__links a[aria-current="page"] { color: var(--text); }
 
+/* ─── site nav: mobile toggle ─── */
+.site-nav__toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.site-nav__toggle-icon,
+.site-nav__toggle-icon::before,
+.site-nav__toggle-icon::after {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--text);
+  position: relative;
+  transition: background 0.15s;
+}
+.site-nav__toggle-icon::before,
+.site-nav__toggle-icon::after {
+  content: '';
+  position: absolute;
+  left: 0;
+}
+.site-nav__toggle-icon::before { top: -6px; }
+.site-nav__toggle-icon::after { top: 6px; }
+
 /* ─── difficulty badge ─── */
 .badge {
   display: inline-flex;
@@ -102,9 +131,9 @@ img, svg { display: block; max-width: 100%; }
   font-size: 11px;
   letter-spacing: 0.04em;
 }
-.badge--green .badge__label  { color: var(--green); }
-.badge--blue .badge__label   { color: var(--blue); }
-.badge--black .badge__label  { color: var(--black-diff); }
+.badge--green .badge__label { color: var(--green); }
+.badge--blue .badge__label { color: var(--blue); }
+.badge--black .badge__label { color: var(--black-diff); }
 .badge--dblack .badge__label { color: var(--red); }
 
 /* ─── breadcrumb ─── */
@@ -122,7 +151,11 @@ img, svg { display: block; max-width: 100%; }
   color: var(--muted);
   max-width: var(--max-w);
   margin: 0 auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
+.breadcrumb__inner::-webkit-scrollbar { display: none; }
 .breadcrumb__sep { color: var(--border-up); }
 .breadcrumb__item--current { color: var(--amber); }
 .breadcrumb__item:not(.breadcrumb__item--current):hover { color: var(--text); cursor: pointer; }
@@ -141,7 +174,11 @@ img, svg { display: block; max-width: 100%; }
   font-size: 12px;
   max-width: var(--max-w);
   margin: 0 auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
+.progression-rail__inner::-webkit-scrollbar { display: none; }
 .progression-rail__label {
   color: var(--muted);
   margin-right: 12px;
@@ -468,7 +505,6 @@ img, svg { display: block; max-width: 100%; }
 .steps { border: 1px solid var(--border); margin-bottom: 32px; }
 .step { border-bottom: 1px solid var(--border); }
 .step:last-child { border-bottom: none; }
-
 .step > summary {
   display: grid;
   grid-template-columns: 40px 1fr 16px;
@@ -481,9 +517,7 @@ img, svg { display: block; max-width: 100%; }
 }
 .step > summary::-webkit-details-marker { display: none; }
 .step > summary:hover { background: var(--surface-up); }
-
 .step[open] > summary { background: var(--surface-up); }
-
 .step__num {
   font-family: var(--font-mono);
   font-size: 22px;
@@ -493,7 +527,6 @@ img, svg { display: block; max-width: 100%; }
   transition: color 0.12s;
 }
 .step[open] .step__num { color: var(--amber); }
-
 .step__title {
   font-family: var(--font-display);
   font-size: 18px;
@@ -508,7 +541,6 @@ img, svg { display: block; max-width: 100%; }
   user-select: none;
 }
 .step[open] .step__toggle { transform: rotate(45deg); }
-
 .step__body {
   padding: 0 16px 16px 68px;
   font-size: 14px;
@@ -553,8 +585,37 @@ img, svg { display: block; max-width: 100%; }
   .two-col { grid-template-columns: 1fr; }
   .trick-layout { grid-template-columns: 1fr; }
   .meta-rail { position: static; }
-  .hero__legend { display: none; }
-  .site-nav__links { display: none; }
+
+  /* legend stays visible, scrolls horizontally instead of disappearing */
+  .hero__legend {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .hero__legend::-webkit-scrollbar { display: none; }
+
+  /* nav collapses behind a toggle instead of vanishing */
+  .site-nav__toggle { display: flex; }
+  .site-nav__links {
+    display: none;
+    position: absolute;
+    top: 44px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+  }
+  .site-nav__links.is-open { display: flex; }
+  .site-nav__links a {
+    height: 44px;
+    padding: 0 var(--px);
+    border-bottom: 1px solid var(--border);
+    width: 100%;
+  }
+
   .video-row { grid-template-columns: 1fr; }
   .trick-row { grid-template-columns: 32px 1fr; }
   .trick-row__category, .trick-row__realm { display: none; }
@@ -565,4 +626,10 @@ img, svg { display: block; max-width: 100%; }
   .realm-grid { grid-template-columns: 1fr; }
   .hero { padding: 32px var(--px) 24px; }
   .trick-title { font-size: 36px; }
+}
+
+@media (max-width: 400px) {
+  :root { --px: 16px; }
+  .hero__title { font-size: 32px; }
+  .trick-title { font-size: 30px; }
 }

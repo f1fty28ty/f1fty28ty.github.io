@@ -22,9 +22,36 @@ function renderBadges() {
   })
 }
 
+// Mobile nav toggle: shows/hides .site-nav__links on narrow screens
+function initNavToggle() {
+  const toggle = document.querySelector('.site-nav__toggle')
+  const links = document.querySelector('.site-nav__links')
+  if (!toggle || !links) return
+
+  toggle.addEventListener('click', () => {
+    const open = links.classList.toggle('is-open')
+    toggle.setAttribute('aria-expanded', open)
+  })
+
+  // close the menu if a link is tapped, or if the viewport is resized past the breakpoint
+  links.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') {
+      links.classList.remove('is-open')
+      toggle.setAttribute('aria-expanded', 'false')
+    }
+  })
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 900) {
+      links.classList.remove('is-open')
+      toggle.setAttribute('aria-expanded', 'false')
+    }
+  })
+}
+
 // Step accordion: open first step by default
 document.addEventListener('DOMContentLoaded', () => {
   renderBadges()
+  initNavToggle()
 
   const steps = document.querySelectorAll('.step')
   if (steps.length > 0) {
