@@ -15,16 +15,28 @@ one) | Category | Terrain.  Hubs with only one category (freeride,
 powder, carving) get no chip row and no Category column, since every
 row would say the same thing.
 
-Needs the .hub-filter / .hub-table / .sr-only rules in assets/css/main.css
-and initHubFilterTables() in assets/js/main.js.
+Self-contained: the script also writes assets/css/hub-table.css and
+assets/js/hub-table.js (the styling + chip/row-click behaviour the new
+table needs) and links them from each hub page, so you don't have to
+touch main.css or main.js. Commit those two new files along with the hubs.
 
-Re-running: this converts the accordion, so once a hub has been converted
-there is no accordion left to read; that file is reported as "already
-converted" and left untouched. To rebuild a hub, restore its accordion
-version from git first.
+Counts: every run also recounts the rows in each hub's table and rewrites the
+numbers that are derived from them -- the "Realm - N Tricks" eyebrow, the meta
+description, the per-category chip counts, and on the home page the realm
+cards, the "By the Numbers" rows and the Total. So after you add or delete
+tricks, just re-run this script and everything agrees.
+
+Re-running: converting the accordion is a one-way trip, so a hub that is
+already a table is reported as "already converted" and its table is left
+alone (asset links and counts are still refreshed). The two asset files are
+rewritten every run. To rebuild a hub's table, restore its accordion version
+from git first.
+
+Needs: pip install beautifulsoup4
 """
 import html
 import re
+from collections import Counter
 from pathlib import Path
 from bs4 import BeautifulSoup
 
@@ -45,6 +57,236 @@ STEPS_BLOCK_RE = re.compile(
     r'(?P=indent)</div>\n',
     re.DOTALL,
 )
+
+
+CSS_PATH = ROOT / "assets/css/hub-table.css"
+JS_PATH = ROOT / "assets/js/hub-table.js"
+
+HUB_CSS = r'''/* hub-table.css -- written by build_table.py (re-running the script regenerates it).
+   Styles the category filter chips + table on the realm/drills hub pages.
+   Every var() has a fallback so this still looks right if a token is missing. */
+
+/* main.css sets overflow-x:hidden on <html> AND <body>. That makes <body> a scroll
+   container, which silently disables every position:sticky (the nav and the table
+   header below). 'clip' crops the same way without doing that. Browsers that don't
+   know 'clip' ignore this line and keep 'hidden'. */
+html, body { overflow-x: clip; }
+
+/* visually hidden, still read by screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ─── filter chips ─── */
+.hub-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.hub-filter__chip {
+  font-family: var(--font-mono, 'DM Mono', monospace);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--muted, #6B6B65);
+  background: transparent;
+  border: 1px solid var(--border, #242424);
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+}
+.hub-filter__chip.is-active {
+  color: var(--text, #EAEAE4);
+  background: var(--surface-up, #181818);
+  border-color: var(--border-up, #303030);
+}
+.hub-filter__chip:hover { border-color: var(--border-up, #303030); }
+.hub-filter__count { color: var(--muted, #6B6B65); margin-left: 5px; }
+.hub-filter__reset {
+  font-family: var(--font-mono, 'DM Mono', monospace);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--muted, #6B6B65);
+  background: none;
+  border: none;
+  margin-left: auto;
+  padding: 6px 4px;
+  cursor: pointer;
+}
+.hub-filter__reset:hover { color: var(--text, #EAEAE4); }
+
+/* ─── table ─── */
+/* overflow must be 'visible' on the wrapper: overflow-x:auto would make it a scroll
+   container and stop the sticky header from tracking the page (it would pin inside
+   the wrapper and cover the first row). Set explicitly because older versions of
+   main.css put overflow-x:auto here. Narrow screens hide the meta columns instead
+   (see the media query at the bottom). */
+.hub-table-wrap { border: 1px solid var(--border, #242424); overflow: visible; }
+.hub-table { width: 100%; border-collapse: collapse; }
+.hub-table thead th {
+  position: sticky;
+  top: 44px; /* height of the sticky site nav */
+  z-index: 5;
+  background: var(--surface, #111111);
+  text-align: left;
+  font-family: var(--font-mono, 'DM Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted, #6B6B65);
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border-up, #303030);
+  white-space: nowrap;
+}
+.hub-table th.hub-table__col--badge { width: 40px; }
+.hub-table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border, #242424);
+  vertical-align: middle;
+}
+.hub-table tbody tr { cursor: pointer; transition: background 0.1s; }
+.hub-table tbody tr:hover { background: var(--surface, #111111); }
+.hub-table tbody tr:last-child td { border-bottom: none; }
+.hub-table__name-link {
+  font-family: var(--font-display, 'Barlow Condensed', sans-serif);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text, #EAEAE4);
+  text-decoration: none;
+}
+.hub-table__name-link:hover { text-decoration: underline; }
+.hub-table__meta {
+  font-family: var(--font-mono, 'DM Mono', monospace);
+  font-size: 11px;
+  color: var(--muted, #6B6B65);
+  white-space: nowrap;
+}
+.hub-table__empty {
+  padding: 32px 14px;
+  text-align: center;
+  font-family: var(--font-mono, 'DM Mono', monospace);
+  font-size: 12px;
+  color: var(--muted, #6B6B65);
+}
+
+@media (max-width: 900px) {
+  .hub-table thead th.hub-table__col--meta,
+  .hub-table td.hub-table__col--meta { display: none; }
+  .hub-filter__reset { margin-left: 0; width: 100%; order: 99; text-align: center; }
+}
+'''
+
+HUB_JS = r'''// hub-table.js -- written by build_table.py (re-running the script regenerates it).
+// Category filter chips + click-anywhere-in-row navigation for the hub tables.
+(function () {
+  function initHubFilterTables() {
+    document.querySelectorAll('[data-hub-table]').forEach(function (table) {
+      var filterId = table.getAttribute('data-hub-table')
+      var filterBar = document.querySelector('[data-hub-filter="' + filterId + '"]')
+      var rows = Array.prototype.slice.call(table.querySelectorAll('tbody tr[data-category]'))
+      var emptyRow = table.querySelector('.hub-table__empty-row')
+
+      // Click anywhere in a row (the link itself already navigates on its own).
+      rows.forEach(function (row) {
+        var link = row.querySelector('a')
+        if (!link) return
+        row.addEventListener('click', function (e) {
+          if (e.target.closest('a')) return
+          window.location.href = link.getAttribute('href')
+        })
+      })
+
+      if (!filterBar) return // single-category hubs have no chips
+
+      var chips = Array.prototype.slice.call(filterBar.querySelectorAll('.hub-filter__chip'))
+      var resetBtn = filterBar.querySelector('.hub-filter__reset')
+
+      function applyFilter() {
+        var active = {}
+        chips.forEach(function (c) {
+          var on = c.classList.contains('is-active')
+          c.setAttribute('aria-pressed', String(on)) // keep screen readers in step
+          if (on) active[c.getAttribute('data-category')] = true
+        })
+        var visible = 0
+        rows.forEach(function (row) {
+          var show = !!active[row.getAttribute('data-category')]
+          row.style.display = show ? '' : 'none'
+          if (show) visible += 1
+        })
+        if (emptyRow) emptyRow.style.display = visible === 0 ? '' : 'none'
+      }
+
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          chip.classList.toggle('is-active')
+          applyFilter()
+        })
+      })
+
+      if (resetBtn) {
+        resetBtn.addEventListener('click', function () {
+          chips.forEach(function (c) { c.classList.add('is-active') })
+          applyFilter()
+        })
+      }
+
+      applyFilter()
+    })
+  }
+
+  // If main.js already defines initHubFilterTables (it calls it on DOMContentLoaded),
+  // swap in this version so the chips aren't wired up twice. Otherwise run it ourselves.
+  if (typeof window.initHubFilterTables === 'function') {
+    window.initHubFilterTables = initHubFilterTables
+  } else if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHubFilterTables)
+  } else {
+    initHubFilterTables()
+  }
+})()
+'''
+
+CSS_ANCHOR_RE = re.compile(r'^([ \t]*)<link[^>]*href="([^"]*?)assets/css/main\.css"[^>]*>[ \t]*\n', re.M)
+JS_ANCHOR_RE = re.compile(r'^([ \t]*)<script[^>]*src="([^"]*?)assets/js/main\.js"[^>]*></script>[ \t]*\n', re.M)
+
+
+def write_assets():
+    for path, content in ((CSS_PATH, HUB_CSS), (JS_PATH, HUB_JS)):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+        print(f"  wrote {path.relative_to(ROOT)}")
+
+
+def ensure_links(text):
+    """Add <link>/<script> tags for the two asset files right after main.css /
+    main.js if the page doesn't reference them yet. Returns (new_text, [what was added])."""
+    added = []
+    if "hub-table.css" not in text:
+        m = CSS_ANCHOR_RE.search(text)
+        if m:
+            tag = f'{m.group(1)}<link rel="stylesheet" href="{m.group(2)}assets/css/hub-table.css">\n'
+            text = text[: m.end()] + tag + text[m.end():]
+            added.append("css")
+    if "hub-table.js" not in text:
+        m = JS_ANCHOR_RE.search(text)
+        if m:
+            tag = f'{m.group(1)}<script src="{m.group(2)}assets/js/hub-table.js"></script>\n'
+            text = text[: m.end()] + tag + text[m.end():]
+            added.append("js")
+    return text, added
 
 
 def esc(s):
@@ -163,34 +405,104 @@ def build_markup(groups, table_id, noun, has_extra_col, extra_col_label):
     return total, body
 
 
+HOME_FILE = "index.html"
+
+
+def update_counts(text):
+    """Recount the table rows on a hub page and rewrite every number derived from
+    them. Returns (new_text, total_rows)."""
+    cats = re.findall(r'<tr data-category="([^"]*)"', text)
+    total, n_cats = len(cats), len(set(cats))
+    per_cat = Counter(cats)
+    meta = r'(<meta name="description" content="[^"]*?'
+
+    # eyebrow: "Realm · 245 Tricks" / "AASI Drill Reference · 69 Drills"
+    text = re.sub(r'(<p class="essentials-eyebrow">[^<]*?)\b\d+(\s+(?:Tricks|Drills)\s*</p>)',
+                  lambda m: f"{m.group(1)}{total}{m.group(2)}", text, count=1, flags=re.I)
+    # meta description: "... — 245 tricks across 8 categories." / "... 69 drills across 8 groups."
+    text = re.sub(meta + r')\b\d+(\s+(?:tricks|drills)\b)',
+                  lambda m: f"{m.group(1)}{total}{m.group(2)}", text, count=1)
+    text = re.sub(meta + r'\bacross\s+)\d+(\s+(?:categories|groups)\b)',
+                  lambda m: f"{m.group(1)}{n_cats}{m.group(2)}", text, count=1)
+    # per-category chip counts
+    text = re.sub(r'(data-category="([^"]*)"[^>]*>[^<]*<span class="hub-filter__count">)\d+(</span>)',
+                  lambda m: f"{m.group(1)}{per_cat.get(m.group(2), 0)}{m.group(3)}", text)
+    return text, total
+
+
+def update_home(counts):
+    """counts: {"freestyle": 245, ..., "drills": 69}. Refreshes the realm cards,
+    the By-the-Numbers rows and the Total on the home page."""
+    path = ROOT / HOME_FILE
+    if not path.exists():
+        return
+    text = orig = path.read_text(encoding="utf-8")
+    for slug, n in counts.items():
+        noun = "drills" if slug == "drills" else "tricks"
+        card = rf'(<a class="realm-card" href="{slug}/index\.html">(?:(?!</a>).)*?<p class="realm-card__count">)\d+(\s+{noun}\b)'
+        text = re.sub(card, lambda m: f"{m.group(1)}{n}{m.group(2)}", text, count=1, flags=re.S)
+        row = rf'(<a href="{slug}/index\.html">)\d+(\s+{noun}</a>)'
+        text = re.sub(row, lambda m: f"{m.group(1)}{n}{m.group(2)}", text, count=1)
+    if len(counts) == len(HUB_FILES):
+        total = sum(counts.values())
+        text = re.sub(r'(<div class="meta-row__label">Total</div>\s*<div class="meta-row__value">)\d+(\s+entries)',
+                      lambda m: f"{m.group(1)}{total}{m.group(2)}", text, count=1)
+        note = f"Total {total}"
+    else:
+        note = "Total left alone (not every hub was counted)"
+    if text != orig:
+        path.write_text(text, encoding="utf-8")
+        print(f"  {HOME_FILE}: counts updated ({note})")
+    else:
+        print(f"  {HOME_FILE}: counts already up to date ({note})")
+
+
 def process(rel_path, noun):
     path = ROOT / rel_path
     text = path.read_text(encoding="utf-8")
 
     m = STEPS_BLOCK_RE.search(text)
-    if not m:
-        if "data-hub-table=" in text:
-            print(f"  {rel_path}: already converted, skipping")
-        else:
-            print(f"  ! could not find <div class=\"steps\"> block in {rel_path}, skipping")
-        return
+    if m:
+        groups = extract_groups(m.group("body"))
+        has_extra_col = any(r["extra"] is not None for g in groups for r in g["rows"])
+        extra_col_label = "Level" if noun == "drills" else "Variation"
+        table_id = slugify(rel_path.split("/")[0]) or "hub"
 
-    groups = extract_groups(m.group("body"))
-    has_extra_col = any(r["extra"] not in (None,) for g in groups for r in g["rows"])
-    extra_col_label = "Level" if noun == "drills" else "Variation"
-    table_id = slugify(rel_path.split("/")[0]) or "hub"
+        total, new_body = build_markup(groups, table_id, noun, has_extra_col, extra_col_label)
+        new_text = text[: m.start()] + new_body + text[m.end():]  # new_body carries its own indentation
+        status = f"{len(groups)} categories, {total} {noun}"
+    elif "data-hub-table=" in text:
+        new_text, status = text, "already converted"
+    else:
+        print(f"  ! could not find <div class=\"steps\"> block in {rel_path}, skipping")
+        return None
 
-    total, new_body = build_markup(groups, table_id, noun, has_extra_col, extra_col_label)
+    before_counts = new_text
+    new_text, total_rows = update_counts(new_text)
+    if new_text != before_counts:
+        status += ", counts refreshed"
 
-    new_text = text[: m.start()] + new_body + text[m.end():]  # new_body carries its own indentation
-    path.write_text(new_text, encoding="utf-8")
-    print(f"  {rel_path}: {len(groups)} categories, {total} {noun}")
+    new_text, added = ensure_links(new_text)
+    if added:
+        status += f" (linked hub-table {' + '.join(added)})"
+    elif "hub-table.css" not in new_text or "hub-table.js" not in new_text:
+        status += " (! couldn't find the main.css / main.js tags to link the assets after)"
+
+    if new_text != text:
+        path.write_text(new_text, encoding="utf-8")
+    print(f"  {rel_path}: {status}")
+    return total_rows
 
 
 def main():
     print("Rebuilding hub tables:")
+    write_assets()
+    counts = {}
     for rel_path, noun in HUB_FILES:
-        process(rel_path, noun)
+        n = process(rel_path, noun)
+        if n is not None:
+            counts[rel_path.split("/")[0]] = n
+    update_home(counts)
 
 
 if __name__ == "__main__":
