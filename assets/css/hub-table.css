@@ -1,5 +1,6 @@
 /* hub-table.css -- written by build_table.py (re-running the script regenerates it).
-   Styles the category filter chips + table on the realm/drills hub pages.
+   Styles the category filter chips + sortable table on the realm/drills hub pages.
+   This file is the single source for hub styling; main.css no longer carries a copy.
    Every var() has a fallback so this still looks right if a token is missing. */
 
 /* main.css sets overflow-x:hidden on <html> AND <body>. That makes <body> a scroll
@@ -21,7 +22,7 @@ html, body { overflow-x: clip; }
   border: 0;
 }
 
-/* ─── filter chips ─── */
+/* ─── filter chips (one active at a time: "All" or a single category) ─── */
 .hub-filter {
   display: flex;
   flex-wrap: wrap;
@@ -41,32 +42,32 @@ html, body { overflow-x: clip; }
   cursor: pointer;
   transition: color 0.12s, border-color 0.12s, background 0.12s;
 }
+.hub-filter__chip:hover { border-color: var(--border-up, #303030); color: var(--text, #EAEAE4); }
 .hub-filter__chip.is-active {
-  color: var(--text, #EAEAE4);
-  background: var(--surface-up, #181818);
-  border-color: var(--border-up, #303030);
+  color: var(--amber, #F0B429);
+  background: var(--amber-dim, rgba(240, 180, 41, 0.12));
+  border-color: var(--amber, #F0B429);
 }
-.hub-filter__chip:hover { border-color: var(--border-up, #303030); }
+.hub-filter__chip:focus-visible { outline: 2px solid var(--amber, #F0B429); outline-offset: 2px; }
 .hub-filter__count { color: var(--muted, #6B6B65); margin-left: 5px; }
-.hub-filter__reset {
-  font-family: var(--font-mono, 'DM Mono', monospace);
-  font-size: 11px;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: var(--muted, #6B6B65);
-  background: none;
-  border: none;
-  margin-left: auto;
-  padding: 6px 4px;
-  cursor: pointer;
+.hub-filter__chip.is-active .hub-filter__count { color: inherit; opacity: 0.7; }
+
+/* ─── small-screen notice (inserted by hub-table.js, only visible on phones) ─── */
+.hub-table__mobile-note {
+  display: none;
+  border-left: 3px solid var(--amber, #F0B429);
+  background: var(--amber-dim, rgba(240, 180, 41, 0.12));
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text, #EAEAE4);
 }
-.hub-filter__reset:hover { color: var(--text, #EAEAE4); }
 
 /* ─── table ─── */
 /* overflow must be 'visible' on the wrapper: overflow-x:auto would make it a scroll
    container and stop the sticky header from tracking the page (it would pin inside
-   the wrapper and cover the first row). Set explicitly because older versions of
-   main.css put overflow-x:auto here. Narrow screens hide the meta columns instead
+   the wrapper and cover the first row). Phones hide the meta columns instead
    (see the media query at the bottom). */
 .hub-table-wrap { border: 1px solid var(--border, #242424); overflow: visible; }
 .hub-table { width: 100%; border-collapse: collapse; }
@@ -86,6 +87,31 @@ html, body { overflow-x: clip; }
   white-space: nowrap;
 }
 .hub-table th.hub-table__col--badge { width: 40px; }
+.hub-table thead th[aria-sort="ascending"],
+.hub-table thead th[aria-sort="descending"] { color: var(--text, #EAEAE4); }
+
+/* header sort buttons (hub-table.js wraps each header's content in one) */
+.hub-table__sort {
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.hub-table__sort::after { content: '↕'; font-size: 11px; opacity: 0.35; }
+.hub-table__sort:hover { color: var(--text, #EAEAE4); }
+.hub-table__sort:hover::after { opacity: 0.8; }
+.hub-table__sort:focus-visible { outline: 2px solid var(--amber, #F0B429); outline-offset: 3px; }
+th[aria-sort="ascending"] .hub-table__sort::after { content: '↑'; opacity: 1; color: var(--amber, #F0B429); }
+th[aria-sort="descending"] .hub-table__sort::after { content: '↓'; opacity: 1; color: var(--amber, #F0B429); }
+
 .hub-table td {
   padding: 9px 14px;
   border-bottom: 1px solid var(--border, #242424);
@@ -117,8 +143,10 @@ html, body { overflow-x: clip; }
   color: var(--muted, #6B6B65);
 }
 
-@media (max-width: 900px) {
+/* Phones only: drop the meta columns and show the notice. iPad portrait (744px+)
+   keeps the full table. */
+@media (max-width: 700px) {
   .hub-table thead th.hub-table__col--meta,
   .hub-table td.hub-table__col--meta { display: none; }
-  .hub-filter__reset { margin-left: 0; width: 100%; order: 99; text-align: center; }
+  .hub-table__mobile-note { display: block; }
 }
