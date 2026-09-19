@@ -490,6 +490,10 @@ img, svg { display: block; max-width: 100%; }
   color: var(--muted);
 }
 
+/* realm hub trick tables: badge, name (with variation folded in), terrain --
+   no separate variation column, see fold_hub_variation.py */
+.trick-table--3col .trick-row { grid-template-columns: 32px 1fr 150px; }
+
 /* ─── progression ladder ─── */
 .ladder { border: 1px solid var(--border); }
 .ladder-step {
@@ -957,7 +961,8 @@ img, svg { display: block; max-width: 100%; }
   }
 
   .video-row { grid-template-columns: 1fr; }
-  .trick-row { grid-template-columns: 32px 1fr; }
+  .trick-row,
+  .trick-table--3col .trick-row { grid-template-columns: 32px 1fr; }
   .trick-row__category, .trick-row__realm { display: none; }
   .progression-rail__line { min-width: 30px; }
 
