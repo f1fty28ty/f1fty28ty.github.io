@@ -17,6 +17,17 @@
         <button class="site-nav__toggle" aria-label="Menu" aria-expanded="false">
           <span class="site-nav__toggle-icon"></span>
         </button>
+        <div class="site-search" id="site-search">
+          <div class="site-search__input-wrap">
+            <svg class="site-search__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.4"/>
+              <line x1="11.2" y1="11.2" x2="15" y2="15" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+            <input class="site-search__input" type="text" placeholder="Search the compendium…" aria-label="Search the compendium" autocomplete="off" spellcheck="false">
+            <button class="site-search__clear" type="button" aria-label="Clear search">&times;</button>
+          </div>
+          <div class="site-search__results" role="listbox" aria-label="Search results"></div>
+        </div>
         <ul class="site-nav__links" role="list">
           <li><a href="../../../freestyle/index.html" aria-current="page">Freestyle</a></li>
           <li><a href="../../../freeride/index.html">Freeride</a></li>
@@ -143,6 +154,7 @@
     </div>
   </main>
 
+  <script src="../../../assets/js/search-index.js"></script>
   <script src="../../../assets/js/main.js"></script>
 </body>
 </html>
