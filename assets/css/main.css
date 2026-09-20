@@ -1100,3 +1100,32 @@ img, svg { display: block; max-width: 100%; }
   .hero__title { font-size: 32px; }
   .trick-title { font-size: 30px; }
 }
+
+/* ─── video slots: filled with a real clip ─── */
+.video-slot--filled {
+  position: relative;
+  overflow: hidden;
+  background: #000;
+  cursor: default;
+}
+.video-slot--filled:hover { border-color: var(--border); }
+.video-slot--filled video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;   /* portrait clips get letterboxed instead of cropped */
+}
+.video-slot__caption {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 2px 8px;
+  background: rgba(0, 0, 0, 0.65);
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  pointer-events: none;
+}

@@ -1,0 +1,186 @@
+{
+    "freestyle/tricks/jumps/bs-180.html": [
+      {
+        "stance": "regular",
+        "src": "assets/videos/reg-bs-180.mp4"
+      },
+      {
+        "stance": "goofy",
+        "src": "assets/videos/goof-bs-180.mp4"
+      }
+    ],
+    "freestyle/tricks/jumps/fs-180.html": [
+      {
+        "stance": "regular",
+        "src": "assets/videos/reg-fs-180.mp4"
+      },
+      {
+        "stance": "goofy",
+        "src": "assets/videos/goof-fs-180.mp4"
+      }
+    ],
+    "freestyle/tricks/jumps/bs-360.html": [
+      {
+        "stance": "regular",
+        "src": "assets/videos/reg-bs-360.mp4"
+      },
+      {
+        "stance": "goofy",
+        "src": "assets/videos/goofy-bs-360.mp4"
+      }
+    ],
+    "freestyle/tricks/jumps/fs-360.html": [
+      {
+        "stance": "regular",
+        "src": "assets/videos/reg-fs-360.mp4"
+      },
+      {
+        "stance": "goofy",
+        "src": "assets/videos/goof-fs-360.mp4"
+      }
+    ],
+    "freestyle/tricks/jumps/shifty.html": [
+      {
+        "stance": "regular",
+        "src": "assets/videos/reg-bs-shifty.mp4",
+        "label": "Regular \u00b7 Backside"
+      },
+      {
+        "stance": "goofy",
+        "src": "assets/videos/goof-bs-shifty.mp4",
+        "label": "Goofy \u00b7 Backside"
+      },
+      {
+        "stance": "regular",
+        "src": "assets/videos/reg-fs-shifty.mp4",
+        "label": "Regular \u00b7 Frontside"
+      },
+      {
+        "stance": "goofy",
+        "src": "assets/videos/goof-fs-shifty.mp4",
+        "label": "Goofy \u00b7 Frontside"
+      }
+    ],
+    "freestyle/tricks/rails-boxes/50-50.html": [
+      {
+        "stance": "regular",
+        "src": "assets/videos/reg-bs-5050.mp4",
+        "label": "Regular \u00b7 Backside"
+      },
+      {
+        "stance": "goofy",
+        "src": "assets/videos/goof-bs-5050.mp4",
+        "label": "Goofy \u00b7 Backside"
+      },
+      {
+        "stance": "regular",
+        "src": "assets/videos/reg-fs-5050.mp4",
+        "label": "Regular \u00b7 Frontside"
+      },
+      {
+        "stance": "goofy",
+        "src": "assets/videos/goof-fs-5050.mp4",
+        "label": "Goofy \u00b7 Frontside"
+      }
+    ],
+    "freestyle/tricks/flatground/manual-nose.html": [
+      {
+        "stance": "regular",
+        "src": "assets/videos/reg-nose-manual.mp4"
+      },
+      {
+        "stance": "goofy",
+        "src": "assets/videos/goof-nose-manual.mp4"
+      }
+    ],
+    "drills/nose-manuals.html": [
+      {
+        "stance": "regular",
+        "src": "assets/videos/reg-nose-manual.mp4"
+      },
+      {
+        "stance": "goofy",
+        "src": "assets/videos/goof-nose-manual.mp4"
+      }
+    ],
+    "freestyle/tricks/flatground/manual-tail.html": [
+      {
+        "stance": "regular",
+        "src": "assets/videos/reg-tail-manual.mp4"
+      },
+      {
+        "stance": "goofy",
+        "src": "assets/videos/goof-tail-manual.mp4"
+      }
+    ],
+    "drills/tail-manuals.html": [
+      {
+        "stance": "regular",
+        "src": "assets/videos/reg-tail-manual.mp4"
+      },
+      {
+        "stance": "goofy",
+        "src": "assets/videos/goof-tail-manual.mp4"
+      }
+    ],
+    "drills/c-turn.html": [
+      {
+        "stance": "regular",
+        "src": "assets/videos/reg-cturn.mp4"
+      },
+      {
+        "stance": "goofy",
+        "src": "assets/videos/goof-cturn.mp4"
+      },
+      {
+        "stance": "regular",
+        "src": "assets/videos/reg-cturn-far.mp4",
+        "label": "Regular \u00b7 Far view"
+      },
+      {
+        "stance": "goofy",
+        "src": "assets/videos/goof-cturn-far.mp4",
+        "label": "Goofy \u00b7 Far view"
+      }
+    ],
+    "drills/sideslips.html": [
+      {
+        "stance": "regular",
+        "src": "assets/videos/reg-sideslip.mp4"
+      },
+      {
+        "stance": "goofy",
+        "src": "assets/videos/goof-sideslip.mp4"
+      },
+      {
+        "stance": "regular",
+        "src": "assets/videos/reg-sideslip-far.mp4",
+        "label": "Regular \u00b7 Far view"
+      },
+      {
+        "stance": "goofy",
+        "src": "assets/videos/goof-sideslip-far.mp4",
+        "label": "Goofy \u00b7 Far view"
+      }
+    ],
+    "drills/snake-turns.html": [
+      {
+        "stance": "regular",
+        "src": "assets/videos/reg-snaketurn.mp4"
+      },
+      {
+        "stance": "goofy",
+        "src": "assets/videos/goof-snaketurns.mp4"
+      }
+    ],
+    "carving/tricks/carving/snake-turns.html": [
+      {
+        "stance": "regular",
+        "src": "assets/videos/reg-snaketurn.mp4"
+      },
+      {
+        "stance": "goofy",
+        "src": "assets/videos/goof-snaketurns.mp4"
+      }
+    ]
+  }

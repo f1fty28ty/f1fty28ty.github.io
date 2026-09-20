@@ -345,12 +345,76 @@ function initSearchPage() {
   })
 }
 
+// ─── Reference videos ───
+// Swaps the ▶ placeholders on trick/drill pages for real <video> players.
+// Clips are listed per page in assets/videos/manifest.json, keyed by the page's path:
+//   "freestyle/tricks/jumps/bs-180.html": [
+//     { "stance": "regular", "src": "assets/videos/reg-bs-180.mp4" },
+//     { "stance": "goofy",   "src": "assets/videos/goof-bs-180.mp4" }
+//   ]
+// Optional "label" overrides the caption. The first clip for each stance replaces its
+// placeholder; any further clips are added as extra slots. Pages with no entry are untouched.
+const VIDEO_SITE_ROOT = document.currentScript ? new URL('../../', document.currentScript.src) : null
+
+function buildVideoSlot(clip, label) {
+  const slot = document.createElement('div')
+  slot.className = 'video-slot video-slot--filled'
+
+  const video = document.createElement('video')
+  // #t=0.001 makes iOS Safari show the first frame instead of a black box
+  video.src = new URL(clip.src, VIDEO_SITE_ROOT).href + '#t=0.001'
+  video.controls = true
+  video.loop = true
+  video.muted = true
+  video.playsInline = true
+  video.preload = 'metadata'
+  video.setAttribute('aria-label', `${label} reference video`)
+
+  const caption = document.createElement('span')
+  caption.className = 'video-slot__caption'
+  caption.textContent = label
+
+  slot.append(video, caption)
+  return slot
+}
+
+function initVideoSlots() {
+  const row = document.querySelector('.video-row')
+  if (!row || !VIDEO_SITE_ROOT) return
+
+  let page = decodeURIComponent(location.pathname.slice(VIDEO_SITE_ROOT.pathname.length))
+  if (!page || page.endsWith('/')) return
+  if (!/\.[a-z0-9]+$/i.test(page)) page += '.html'   // GitHub Pages also serves pages without .html
+
+  fetch(new URL('assets/videos/manifest.json', VIDEO_SITE_ROOT))
+    .then(res => (res.ok ? res.json() : null))
+    .then(manifest => {
+      const clips = manifest && manifest[page]
+      if (!clips || !clips.length) return
+
+      const claimed = {}
+      clips.forEach(clip => {
+        const label = clip.label || (clip.stance === 'goofy' ? 'Goofy Stance' : 'Regular Stance')
+        const slot = buildVideoSlot(clip, label)
+        const placeholder = claimed[clip.stance]
+          ? null
+          : Array.from(row.querySelectorAll('.video-slot:not(.video-slot--filled)'))
+              .find(el => (el.getAttribute('aria-label') || '').toLowerCase().includes(clip.stance))
+        claimed[clip.stance] = true
+        if (placeholder) placeholder.replaceWith(slot)
+        else row.appendChild(slot)
+      })
+    })
+    .catch(() => {})   // no manifest (e.g. opened via file://) → keep the placeholders
+}
+
 // Step accordion: open first step by default
 document.addEventListener('DOMContentLoaded', () => {
   renderBadges()
   initNavToggle()
   initSiteSearch()
   initSearchPage()
+  initVideoSlots()
 
   const steps = document.querySelectorAll('.step')
   if (steps.length > 0) {
