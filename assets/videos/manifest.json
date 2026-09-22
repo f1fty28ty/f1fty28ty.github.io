@@ -7,16 +7,6 @@
     {
       "stance": "goofy",
       "src": "assets/videos/goof-bs-180.mp4"
-    },
-    {
-      "stance": "regular",
-      "src": "assets/videos/reg-bs-180-on-irl.mp4",
-      "label": "Regular · On-hill"
-    },
-    {
-      "stance": "goofy",
-      "src": "assets/videos/goof-bs-180-on-irl.mp4",
-      "label": "Goofy · On-hill"
     }
   ],
   "freestyle/tricks/jumps/fs-180.html": [
@@ -44,11 +34,6 @@
       "label": "Regular · IRL (right)"
     },
     {
-      "stance": "regular",
-      "src": "assets/videos/reg-fs-180-on-irl.mp4",
-      "label": "Regular · On-hill"
-    },
-    {
       "stance": "goofy",
       "src": "assets/videos/goof-fs-180-irl.mp4",
       "label": "Goofy · IRL"
@@ -62,11 +47,6 @@
       "stance": "goofy",
       "src": "assets/videos/goof-fs-180-irl-r.mp4",
       "label": "Goofy · IRL (right)"
-    },
-    {
-      "stance": "goofy",
-      "src": "assets/videos/goof-fs-180-on-irl.mp4",
-      "label": "Goofy · On-hill"
     }
   ],
   "freestyle/tricks/jumps/bs-360.html": [
@@ -369,6 +349,28 @@
     {
       "stance": "goofy",
       "src": "assets/videos/goof-fs-board-to-fakie-irl.mp4",
+      "label": "Goofy · Frontside"
+    }
+  ],
+  "freestyle/tricks/rails-boxes/180-on.html": [
+    {
+      "stance": "regular",
+      "src": "assets/videos/reg-bs-180-on-irl.mp4",
+      "label": "Regular · Backside"
+    },
+    {
+      "stance": "goofy",
+      "src": "assets/videos/goof-bs-180-on-irl.mp4",
+      "label": "Goofy · Backside"
+    },
+    {
+      "stance": "regular",
+      "src": "assets/videos/reg-fs-180-on-irl.mp4",
+      "label": "Regular · Frontside"
+    },
+    {
+      "stance": "goofy",
+      "src": "assets/videos/goof-fs-180-on-irl.mp4",
       "label": "Goofy · Frontside"
     }
   ]
