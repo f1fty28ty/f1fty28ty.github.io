@@ -354,6 +354,8 @@ function initSearchPage() {
 //   ]
 // Optional "label" overrides the caption. The first clip for each stance replaces its
 // placeholder; any further clips are added as extra slots. Pages with no entry are untouched.
+// Clips autoplay (muted + looped) as soon as they're inserted; controls stay on so the
+// viewer can pause, but nothing starts paused.
 const VIDEO_SITE_ROOT = document.currentScript ? new URL('../../', document.currentScript.src) : null
 
 function buildVideoSlot(clip, label) {
@@ -366,6 +368,7 @@ function buildVideoSlot(clip, label) {
   video.controls = true
   video.loop = true
   video.muted = true
+  video.autoplay = true
   video.playsInline = true
   video.preload = 'metadata'
   video.setAttribute('aria-label', `${label} reference video`)
@@ -403,6 +406,7 @@ function initVideoSlots() {
         claimed[clip.stance] = true
         if (placeholder) placeholder.replaceWith(slot)
         else row.appendChild(slot)
+        slot.querySelector('video').play().catch(() => {})   // autoplay; ignore if the browser blocks it
       })
     })
     .catch(() => {})   // no manifest (e.g. opened via file://) → keep the placeholders
